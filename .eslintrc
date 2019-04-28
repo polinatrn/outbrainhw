@@ -1,9 +1,0 @@
-{
-    "plugins": [
-      "protractor"
-    ],
-    "extends": "plugin:protractor/recommended",
-    "globals": {
-      "browser": false }
-  
-  }
