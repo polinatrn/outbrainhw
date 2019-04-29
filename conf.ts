@@ -10,6 +10,6 @@ export let config: Config =  {
     'browserName': 'chrome'
   }],
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs: ['spec/login.spec.js'],
+  specs: ['spec/login.spec.js', 'spec/email-validation.spec.ts'],
   noGlobals: true
 }
