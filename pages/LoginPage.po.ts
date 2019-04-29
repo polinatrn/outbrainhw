@@ -1,42 +1,59 @@
-import {browser, element, by, ExpectedConditions} from 'protractor';
+import { element, by, ElementFinder } from 'protractor';
 
 /**
  * @export
  * @class LoginPage
  */
 export class LoginPage {
-    url = 'http://automationpractice.com/index.php?controller=authentication'
+  url = 'http://automationpractice.com/index.php?controller=authentication';
 
-    userNameTextBox() {
-        return element(by.id('email'));
-    }
+  userNameTextBox(): ElementFinder {
+    return element(by.id('email'));
+  }
 
-    passwordTextBox() {
-        return element(by.id('passwd'));
-    }
+  passwordTextBox(): ElementFinder {
+    return element(by.id('passwd'));
+  }
 
-    loginSubmitButton() {
-        return element(by.id('SubmitLogin'));
-    }
+  loginSubmitButton(): ElementFinder {
+    return element(by.id('SubmitLogin'));
+  }
 
-    
-    errorHeader: function() {
-        element.all(by.className('alert alert-danger')).each(function(element) {
-            element.isDisplayed().then(function (result) {
-                    if ( result ) {
-                        element.getText().then((text) => {
-                            return text;
-                        });
-                    }
-            });
-          });
-        
-    }
+  forgotPasswordLink(): ElementFinder {
+    return element(by.className('lost_password form-group')).element(by.tagName('a'));
+  }
 
+  login(username, password): void {
+    this.userNameTextBox().sendKeys(username);
+    this.passwordTextBox().sendKeys(password);
+    this.loginSubmitButton().click();
+  }
 
-    login(username, password) {
-        this.userNameTextBox().sendKeys(username);
-        this.passwordTextBox().sendKeys(password);
-        this.loginSubmitButton().click();
-    }
+  isValidEmail(email): boolean {
+      let result = false;
+      this.userNameTextBox().sendKeys(email);
+      var parentDiv = this.userNameTextBox().parentElementArrayFinder;
+      parentDiv.getAttribute('class').then(function (classes) {
+        return classes.split(' ').indexOf('form-ok') !== -1;
+      }).then (function (exists){
+        if (exists) {
+          result = true;
+        }
+      });
+      return result;  
+  }
+
+  errorHeader = async (): Promise<string[]> => {
+    const errors = [];
+    await element
+      .all(by.className('alert alert-danger'))
+      .each(async errorElement => {
+        const isDispayed = await errorElement.isDisplayed();
+        if (isDispayed) {
+          const text = await errorElement.getText();
+          errors.push(text);
+        }
+      });
+    return errors;
+  };
 }
