@@ -43,6 +43,16 @@ describe('Login Page Tests', () => {
     expect(errorMessages).toEqual(['There is 1 error\nAuthentication failed.']);
   });
 
+  
+  it('Should stay on Login Page and display error when login with empty email and password', async () => {
+    loginPage.login("", "");
+    loginPage.loginSubmitButton().click;
+    expect(browser.getCurrentUrl()).toEqual(loginPage.url);
+    const errorMessages = await loginPage.errorHeader();
+    expect(errorMessages).toEqual(['There is 1 error\nAn email address required.']);
+  });
+
+
   it('Should stay on Login Page and display error when login with correct email, incorrect password', async () => {
     loginPage.login(correctUser, incorrectPassword);
     expect(browser.getCurrentUrl()).toEqual(loginPage.url);
@@ -75,5 +85,10 @@ describe('Login Page Tests', () => {
   it('Should navigate to FORGOT YOUR PASSWORD page when the link is clicked', () => {
     loginPage.forgotPasswordLink().click();
     expect(browser.getCurrentUrl()).toEqual(forgotPasswordPage.url);
+  });
+
+  
+  it('Password field should be with hidden text', () => {
+    expect(loginPage.passwordTextBox().getAttribute('type')).toBe('password');
   });
 });

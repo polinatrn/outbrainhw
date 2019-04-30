@@ -1,7 +1,6 @@
 import { browser } from 'protractor';
 import { LoginPage } from '../pages/LoginPage.po';
 import { MyAccountPage } from '../pages/MyAccountPage.po';
-import { getMaxListeners } from 'cluster';
 
 describe('Login Page Tests - email validation functionality', () => {
   let loginPage: LoginPage;
@@ -12,12 +11,12 @@ describe('Login Page Tests - email validation functionality', () => {
     browser.waitForAngularEnabled(false);
     loginPage = new LoginPage();
     myAccountPage = new MyAccountPage();
-    browser.get(loginPage.url);
   });
 
   beforeEach(() => {
     browser.get(myAccountPage.url);
     myAccountPage.logout();
+    browser.get(loginPage.url);
   });
 
   it('Should mark valid emails as valid', () => {
