@@ -37,10 +37,10 @@ describe('Login Page Tests', () => {
   });
 
   it('Should stay on Login Page and display error when login with correct email, password in uppercase', async () => {
-    loginPage.login(correctUser, correctPassword.toUpperCase);
+    loginPage.login(correctUser, correctPassword.toUpperCase());
     expect(browser.getCurrentUrl()).toEqual(loginPage.url);
     const errorMessages = await loginPage.errorHeader();
-    expect(errorMessages).toEqual(['There is 1 error\nInvalid password.']);
+    expect(errorMessages).toEqual(['There is 1 error\nAuthentication failed.']);
   });
 
   it('Should stay on Login Page and display error when login with correct email, incorrect password', async () => {

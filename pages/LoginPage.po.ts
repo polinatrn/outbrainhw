@@ -1,4 +1,4 @@
-import { element, by, ElementFinder } from 'protractor';
+import { element, by, ElementFinder, browser } from 'protractor';
 
 /**
  * @export
@@ -29,19 +29,23 @@ export class LoginPage {
     this.loginSubmitButton().click();
   }
 
-  isValidEmail(email): boolean {
-      let result = false;
+  isValidEmail(email){
       this.userNameTextBox().sendKeys(email);
-      var parentDiv = this.userNameTextBox().parentElementArrayFinder;
-      parentDiv.getAttribute('class').then(function (classes) {
-        return classes.split(' ').indexOf('form-ok') !== -1;
-      }).then (function (exists){
-        if (exists) {
-          result = true;
-        }
-      });
-      return result;  
+      element(by.tagName('label')).click();
+      var parentDiv = element(by.className('form-group form-ok'));
+      return parentDiv.element(by.id('email')).isPresent();
+  
   }
+
+  
+  isInvalidEmail(email){
+    this.userNameTextBox().sendKeys(email);
+    element(by.tagName('label')).click();
+    var parentDiv = element(by.className('form-group form-error'));
+    return parentDiv.element(by.id('email')).isPresent();
+
+}
+
 
   errorHeader = async (): Promise<string[]> => {
     const errors = [];
@@ -56,4 +60,6 @@ export class LoginPage {
       });
     return errors;
   };
+
+
 }
